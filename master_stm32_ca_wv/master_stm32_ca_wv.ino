@@ -11,8 +11,9 @@ void master_send(int slave_address, int wheel_velocity, int corner_angle){
   Serial.flush();
 }
 
-void master_send(int slave_address, int wheel_velocity, int corner_angle, SoftwareSerial& Serialx){
+void master_send(int slave_address, int wheel_velocity, int corner_angle, SoftwareSerial& Serialx, int enable){
 
+  digitalWrite(enable, HIGH);
   Serialx.print("I");  //start transmission, next value is slave number
   Serialx.print(slave_address);  //slave number
   Serialx.print("A");  //next value is corner Angle
