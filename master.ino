@@ -11,7 +11,7 @@ void master_send(int slave_address, int wheel_velocity, int corner_angle, Softwa
   Serialx.print("V");  //next value is wheel Velocity
   Serialx.print(wheel_velocity);
   Serialx.print("F");  //end of transmission
-+  Serialx.flush();
+  Serialx.flush();
 }
 
 
