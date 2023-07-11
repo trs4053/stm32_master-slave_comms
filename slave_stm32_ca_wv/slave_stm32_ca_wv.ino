@@ -5,26 +5,14 @@ struct values {
   int wheel_velocity;
 };
 
-values get_values(SoftwareSerial& serialx) {
-  values v = {0, 0};  // Initialize the struct with default values
-
-  if (serialx.available()) {
-    if (serialx.read() == 'V') {
-      v.wheel_velocity = serialx.parseInt();
-    } else if (serialx.read() == 'A') {
-      v.corner_angle = serialx.parseInt();
-    }
-  }
-  return v;
-}
-
 class Slave {
-private:
+
+public:
   int slave_no;
   int enable;
   SoftwareSerial& serialx;
   
-public:
+
   Slave(int slave_address, SoftwareSerial& soft_serial, int enable)
     : enable(enable), serialx(soft_serial), slave_no(slave_address) {}
 
@@ -33,29 +21,28 @@ public:
     pinMode(enable, OUTPUT);
   }
 
-  bool slaveno() {
-  if (serialx.available()) {
-    
+  values get_values(){
+  values v={0,0};
+  int slave_add=0;
+  if (serialx.available()){
     if (serialx.read() == 'I') {
-      
-      int slave_add = serialx.parseInt();
-      if (this->slave_no == slave_add) {
-        
-        return true;
-      } 
-      else {return false;}
+      slave_add = serialx.parseInt();
+      if (slave_no == slave_add) {
+        if (serialx.read() == 'V') {
+          v.wheel_velocity = serialx.parseInt();
+        } 
+        else if (serialx.read() == 'A') {
+          v.corner_angle = serialx.parseInt();
+        }   
+      }
+
+      else {return {0,0};}
     }
   }
-  return false;  // Default return value
+  return v;
 }
 
-values getvalues() {
-  digitalWrite(enable, LOW);
-  if (slaveno()) {
-    return get_values(this->serialx);
-  }
-  return values();  // Default return value
-  }
+
  
 };
 
