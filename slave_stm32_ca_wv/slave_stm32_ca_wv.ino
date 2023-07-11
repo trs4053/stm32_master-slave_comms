@@ -21,7 +21,7 @@ public:
     pinMode(enable, OUTPUT);
   }
 
-  values get_values(){
+  values getvalues(){
   values v={0,0};
   int slave_add=0;
   if (serialx.available()){
